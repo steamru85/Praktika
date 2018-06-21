@@ -2,4 +2,6 @@
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
 
-/StagingWizard/StagingWizard/bin/Debug/netcoreapp2.0
+/StagingWizard/StagingWizard/bin
+/StagingWizard/StagingWizard/obj
+/StagingWizard/.vs/
