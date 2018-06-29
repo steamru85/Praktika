@@ -12,7 +12,6 @@ using System.Threading.Tasks;
 
 namespace StagingWizard.Attributes
 {
-    //[AttributeUsage(AttributeTargets.Method)]
     public class AuthorizationAttribute: ActionFilterAttribute, IActionFilter
     {
         public AuthorizationAttribute() { }

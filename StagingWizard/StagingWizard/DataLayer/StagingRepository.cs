@@ -86,8 +86,7 @@ namespace StagingWizard.DataLayer
                 return conn.QueryFirst<StagingInList>("select * from stagings where id = @id", new { id });
             }
         }
-
-        //авторизация
+        
         public string SignInCheck(User user)
         {
             using (var conn = OpenConnection(ConnectionString))
@@ -109,8 +108,7 @@ namespace StagingWizard.DataLayer
                 }
             }
         }
-
-        //хеширование
+        
         private string GetHashPassword(User user)
         {
 
@@ -124,8 +122,7 @@ namespace StagingWizard.DataLayer
                 result += b.ToString("x2");
             return result;
         }
-
-        //добавление пользователя
+        
         public string AddUser(User user)
         {
             using (var conn = OpenConnection(ConnectionString))
@@ -142,8 +139,7 @@ namespace StagingWizard.DataLayer
                 }
             }
         }
-
-        //генерация токена
+        
         private string GetToken()
         {
             Random rnd = new Random();
@@ -155,8 +151,7 @@ namespace StagingWizard.DataLayer
             }
             return builder.ToString();
         }
-
-        //обновление токена пользователя
+        
         private string UpdateToken(User user)
         {
             using (var conn = OpenConnection(ConnectionString))
