@@ -81,19 +81,5 @@ namespace StagingWizard.Controllers
         {
                 StagingRepository.AddServer(server.StagingId, server);
         }
-
-        [Route("signin")]
-        [HttpPost]
-        public string SignIn([FromBody]User user)
-        {
-            return StagingRepository.SignInCheck(user);
-        }
-
-        [Route("registrate")]
-        [HttpPost]
-        public string AddUser([FromBody]User user)
-        {
-            return StagingRepository.AddUser(user);
-        }
     }
 }
