@@ -28,6 +28,7 @@ namespace StagingWizard
         {
             var connectionString = GetConnectionString();
             services.AddTransient<IStagingRepository>(s => new StagingRepository(connectionString));
+            services.AddTransient<IUserRepository>(s => new UserRepository(connectionString));
             services.AddMvc();
         }
 
