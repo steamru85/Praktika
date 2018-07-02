@@ -17,7 +17,5 @@ namespace StagingWizard.DataLayerContracts
         void UpdateStagingState(Guid id, EStagingState state, string currentstep);
         void AddServer(Guid stagingId, Server server);
         void DeleteStaging(Guid id);
-        string SignInCheck(User user);
-        string AddUser(User user);
     }
 }
