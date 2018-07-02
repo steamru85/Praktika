@@ -26,7 +26,7 @@ namespace StagingWizard.Controllers
         
         [Route("add")]
         [HttpPost, Authorization]
-        public StagingInList Create(NewStagingContract staging)
+        public StagingInList Create(NewStagingContract staging, [FromHeader]string token)
         {
                 Guid id = Guid.NewGuid();
                 string inputParams = string.Empty;
@@ -42,44 +42,58 @@ namespace StagingWizard.Controllers
         
         [Route("update")]
         [HttpPost, Authorization]
-        public void Update(UpdateStagingContract staging)
+        public void Update(UpdateStagingContract staging, [FromHeader]string token)
         {
                 StagingRepository.UpdateStagingState(staging.Id, staging.State, staging.CurrentStep);
         }
         
         [Route("delete")]
         [HttpPost, Authorization]
-        public void Delete(DeleteStagingContract staging)
+        public void Delete(DeleteStagingContract staging, [FromHeader]string token)
         {
                 StagingRepository.DeleteStaging(staging.Id);
         }
         
         [Route("list")]
         [HttpPost, Authorization]
-        public IEnumerable<StagingInList> GetList()
+        public IEnumerable<StagingInList> GetList([FromHeader]string token)
         {
                 return StagingRepository.GetList();
         }
         
         [Route("list/{id}")]
         [HttpPost, Authorization]
-        public StagingInList GetInList(Guid id)
+        public StagingInList GetInList(Guid id, [FromHeader]string token)
         {
                 return StagingRepository.GetStagingInList(id);
         }
         
         [Route("{id}")]
         [HttpPost, Authorization]
-        public StagingInLayer GetInLayer(Guid id)
+        public StagingInLayer GetInLayer(Guid id, [FromHeader]string token)
         {
                 return StagingRepository.GetStaging(id);
         }
         
         [Route("addserver")]
         [HttpPost, Authorization]
-        public void AddServer(AddServerContract server)
+        public void AddServer(AddServerContract server, [FromHeader]string token)
         {
                 StagingRepository.AddServer(server.StagingId, server);
+        }
+
+        [Route("signin")]
+        [HttpPost]
+        public string SignIn([FromBody]User user)
+        {
+            return StagingRepository.SignInCheck(user);
+        }
+
+        [Route("registrate")]
+        [HttpPost]
+        public string AddUser([FromBody]User user)
+        {
+            return StagingRepository.AddUser(user);
         }
     }
 }
