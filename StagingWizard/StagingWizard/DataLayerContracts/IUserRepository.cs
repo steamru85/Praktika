@@ -8,8 +8,8 @@ namespace StagingWizard.DataLayerContracts
 {
     public interface IUserRepository
     {
-        string SignInCheck(User user);
-        string AddUser(User user);
+        User SignInCheck(User user);
+        User AddUser(User user);
         bool CheckToken(string token);
     }
 }

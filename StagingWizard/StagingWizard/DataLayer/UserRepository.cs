@@ -25,7 +25,7 @@ namespace StagingWizard.DataLayer
             return conn;
         }
 
-        public string SignInCheck(User user)
+        public User SignInCheck(User user)
         {
             using (var conn = OpenConnection(ConnectionString))
             {
@@ -38,11 +38,11 @@ namespace StagingWizard.DataLayer
                     {
                         return UpdateToken(user);
                     }
-                    return "Вход не выполнен";
+                    throw new Exception("Вход не выполнен");
                 }
                 catch
                 {
-                    return "Вход не выполнен!";
+                    throw new Exception("Вход не выполнен!");
                 }
             }
         }
@@ -61,7 +61,7 @@ namespace StagingWizard.DataLayer
             return result;
         }
 
-        public string AddUser(User user)
+        public User AddUser(User user)
         {
             using (var conn = OpenConnection(ConnectionString))
             {
@@ -69,11 +69,11 @@ namespace StagingWizard.DataLayer
                 {
                     user.Password = GetHashPassword(user);
                     conn.Execute("INSERT INTO users(login, password) VALUES(@Login, @Password)", new { user.Login, user.Password });
-                    return "Пользователь успешно добавлен";
+                    return user;
                 }
                 catch
                 {
-                    return "Произошла ошибка в добавлении нового пользователя";
+                    throw new Exception("Произошла ошибка в добавлении нового пользователя");
                 }
             }
         }
@@ -90,14 +90,13 @@ namespace StagingWizard.DataLayer
             return builder.ToString();
         }
 
-        private string UpdateToken(User user)
+        private User UpdateToken(User user)
         {
             using (var conn = OpenConnection(ConnectionString))
             {
-                string token = GetToken();
-                var command = conn.Execute("UPDATE users SET token = @Token WHERE login = @Login", new { token, user.Login });
-                user.Token = token;
-                return "Токен: " + token;
+                user.Token = GetToken();
+                var command = conn.Execute("UPDATE users SET token = @Token WHERE login = @Login", new { user.Token, user.Login });
+                return user;
             }
         }
 

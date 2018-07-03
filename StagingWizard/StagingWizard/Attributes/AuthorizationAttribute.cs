@@ -1,18 +1,36 @@
 ﻿using Microsoft.AspNetCore.Mvc.Filters;
 using StagingWizard.DataLayer;
+using Microsoft.Extensions.Configuration;
+using System.IO;
 
 namespace StagingWizard.Attributes
 {
-    public class AuthorizationAttribute: ActionFilterAttribute, IActionFilter
+    public class AuthorizationAttribute : ActionFilterAttribute, IActionFilter
     {
-        public AuthorizationAttribute() { }
+        private IConfiguration Configuration { get; } 
+        public UserRepository userRepository;
+
+        public AuthorizationAttribute()
+        {
+            var builder = new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.json");
+
+            Configuration = builder.Build();
+            userRepository = new UserRepository(GetConnectionString());
+        }
+
+        private string GetConnectionString()
+        {
+            var connectionString = Configuration.GetConnectionString("DefaultConnection");
+            return connectionString;
+        }
 
         public override void OnActionExecuting(ActionExecutingContext context)
         {
             base.OnActionExecuting(context);
             string token = context.HttpContext.Request.Headers["token"];
 
-            UserRepository userRepository = new UserRepository("server=127.0.0.1;userid=postgres;password=1;database=stagingdb;");
             if (userRepository.CheckToken(token))
                 context.HttpContext.Response.StatusCode = 200;
             else
