@@ -9,7 +9,7 @@ using System.Text;
 
 namespace StagingWizard.DataLayer
 {
-    public class UserRepository: IUserRepository
+    public class UserRepository : IUserRepository
     {
         public UserRepository(string connectionString)
         {
@@ -25,19 +25,20 @@ namespace StagingWizard.DataLayer
             return conn;
         }
 
-        public User SignInCheck(User user)
+        public User SignIn(User user)
         {
             using (var conn = OpenConnection(ConnectionString))
             {
                 try
                 {
                     user.Password = GetHashPassword(user);
-                    var reader = conn.ExecuteReader("SELECT * FROM users WHERE login = @Login AND password = @Password", new { user.Login, user.Password });
+                    user.Token = GetToken();
 
-                    while (reader.Read())
-                    {
-                        return UpdateToken(user);
-                    }
+                    var affectedRowsCount = conn.Execute("UPDATE users SET token = @Token WHERE login = @Login AND password = @Password",
+                        new { user.Token, user.Login, user.Password });
+                    if (affectedRowsCount == 1)
+                        return user;
+
                     throw new Exception("Вход не выполнен");
                 }
                 catch
@@ -88,16 +89,6 @@ namespace StagingWizard.DataLayer
                 builder.Append(c);
             }
             return builder.ToString();
-        }
-
-        private User UpdateToken(User user)
-        {
-            using (var conn = OpenConnection(ConnectionString))
-            {
-                user.Token = GetToken();
-                var command = conn.Execute("UPDATE users SET token = @Token WHERE login = @Login", new { user.Token, user.Login });
-                return user;
-            }
         }
 
         public bool CheckToken(string token)

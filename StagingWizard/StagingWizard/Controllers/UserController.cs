@@ -28,7 +28,7 @@ namespace StagingWizard.Controllers
         [HttpPost]
         public User SignIn([FromBody]User user)
         {
-            return UserRepository.SignInCheck(user);
+            return UserRepository.SignIn(user);
         }
 
         [Route("registrate")]
