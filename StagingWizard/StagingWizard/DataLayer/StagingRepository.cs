@@ -5,10 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using Dapper;
-using System.Text;
-using System.Security.Cryptography;
-using Microsoft.AspNetCore.Http;
-using System.Threading.Tasks;
 
 namespace StagingWizard.DataLayer
 {
