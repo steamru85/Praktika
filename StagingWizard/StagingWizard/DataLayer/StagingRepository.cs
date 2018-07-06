@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using Dapper;
-using System.Threading.Tasks;
 
 namespace StagingWizard.DataLayer
 {
@@ -65,7 +64,7 @@ namespace StagingWizard.DataLayer
                 var staging = conn.QueryFirst<StagingInLayer>("select * from stagings where id = @id", new { id });
                 staging.Servers = conn.Query<Server>("select * from servers where stagingid = @id", new { id });
                 return staging;
-            }            
+            }
         }
 
         public void UpdateStagingState(Guid id, EStagingState state, string currentstep)

@@ -10,6 +10,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using StagingWizard.DataLayer;
 using StagingWizard.DataLayerContracts;
+using Microsoft.AspNetCore.Mvc.Filters;
+using StagingWizard.Attributes;
 
 namespace StagingWizard
 {
@@ -27,6 +29,8 @@ namespace StagingWizard
         {
             var connectionString = GetConnectionString();
             services.AddTransient<IStagingRepository>(s => new StagingRepository(connectionString));
+            services.AddTransient<IUserRepository>(s => new UserRepository(connectionString));
+            services.AddTransient<IBranchesRepository>(s => new BranchesRepository());
             services.AddMvc();
         }
 

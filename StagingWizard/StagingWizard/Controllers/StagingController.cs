@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using StagingWizard.DataLayerContracts;
 using StagingWizard.UIContracts;
+using StagingWizard.Attributes;
+using System.Net;
+using System.Net.Http;
+using System.IO;
 
 namespace StagingWizard.Controllers
 {
@@ -22,7 +23,7 @@ namespace StagingWizard.Controllers
         }
 
         [Route("add")]
-        [HttpPost]
+        [HttpPost, Authorization]
         public StagingInList Create(NewStagingContract staging)
         {
             Guid id = Guid.NewGuid();
@@ -38,45 +39,45 @@ namespace StagingWizard.Controllers
         }
 
         [Route("update")]
-        [HttpPost]
+        [HttpPost, Authorization]
         public void Update(UpdateStagingContract staging)
         {
             StagingRepository.UpdateStagingState(staging.Id, staging.State, staging.CurrentStep);
         }
 
         [Route("delete")]
-        [HttpPost]
-        public  void Delete(DeleteStagingContract staging)
+        [HttpPost, Authorization]
+        public void Delete(DeleteStagingContract staging)
         {
-             StagingRepository.DeleteStaging(staging.Id);
+            StagingRepository.DeleteStaging(staging.Id);
         }
 
         [Route("list")]
-        [HttpPost]
-        public  IEnumerable<StagingInList> GetList()
+        [HttpPost, Authorization]
+        public IEnumerable<StagingInList> GetList()
         {
             return StagingRepository.GetList();
         }
 
         [Route("list/{id}")]
-        [HttpPost]
+        [HttpPost, Authorization]
         public StagingInList GetInList(Guid id)
         {
             return StagingRepository.GetStagingInList(id);
         }
 
         [Route("{id}")]
-        [HttpPost]
-        public  StagingInLayer GetInLayer(Guid id)
+        [HttpPost, Authorization]
+        public StagingInLayer GetInLayer(Guid id)
         {
             return StagingRepository.GetStaging(id);
         }
 
         [Route("addserver")]
-        [HttpPost]
+        [HttpPost, Authorization]
         public void AddServer(AddServerContract server)
         {
-             StagingRepository.AddServer(server.StagingId, server);
+            StagingRepository.AddServer(server.StagingId, server);
         }
     }
 }
